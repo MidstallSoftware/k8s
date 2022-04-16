@@ -1,0 +1,122 @@
+version: '3'
+
+services:
+  cloud-db:
+    image: 'yobasystems/alpine-mariadb:10.4.13'
+    container_name: midstall-cloud-db
+    restart: on-failure
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - 'data-cloud-db:/var/lib/mysql'
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=cloud
+      - MYSQL_DATABASE=cloud
+    networks:
+      - internal
+    env_file:
+      - ./.env
+  cloud-cache:
+    image: 'redis:6.2-alpine'
+    container_name: midstall-cloud-cache
+    restart: on-failure
+    command: >
+      --requirepass ${REDIS_HOST_PASSWORD}
+    volumes:
+      - data-cloud-cache:/data
+    networks:
+      - internal
+    env_file:
+      - ./.env
+  cloud:
+    build: packages/cloud
+    container_name: midstall-cloud
+    restart: on-failure
+    depends_on:
+      - cloud-db
+      - cloud-cache
+    volumes:
+      - 'data-cloud:/var/www/html'
+    environment:
+      - REDIS_HOST=cloud-cache
+      - MYSQL_HOST=cloud-db
+      - MYSQL_USER=cloud
+      - MYSQL_DATABASE=cloud
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.midstall.com
+      - VIRTUAL_HOST=cloud.midstall.com
+      - LETSENCRYPT_HOST=cloud.midstall.com
+    networks:
+      - internal
+    env_file:
+      - ./.env
+  cloud-cron:
+    build: packages/cloud
+    container_name: midstall-cloud-cron
+    restart: always
+    entrypoint: /cron.sh
+    depends_on:
+      - cloud-d
+      - cloud-cacheb
+    volumes:
+      - 'data-cloud:/var/www/html'
+    environment:
+      - REDIS_HOST=cloud-cache
+      - MYSQL_HOST=cloud-db
+      - MYSQL_USER=cloud
+      - MYSQL_DATABASE=cloud
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.midstall.com
+    networks:
+      - internal
+    env_file:
+      - ./.env
+  website:
+    build: packages/website
+    container_name: midstall-website
+    restart: on-failure
+    environment:
+      - VIRTUAL_HOST=midstall.com,www.midstall.com
+      - LETSENCRYPT_HOST=midstall.com,www.midstall.com
+    networks:
+      - internal
+  server:
+    image: nginxproxy/nginx-proxy:alpine
+    container_name: midstall-server
+    restart: always
+    networks:
+      - internal
+    ports:
+      - 80:80
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true
+    volumes:
+      - data-ssl-certs:/etc/nginx/certs:ro
+      - data-ssl-vhosts:/etc/nginx/vhost.d
+      - data-ssl-html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  server-ssl:
+    image: nginxproxy/acme-companion
+    container_name: midstall-server-ssl
+    restart: on-failure
+    volumes:
+      - data-ssl-certs:/etc/nginx/certs
+      - data-ssl-acme:/etc/acme.sh
+      - data-ssl-vhosts:/etc/nginx/vhost.d
+      - data-ssl-html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - internal
+    depends_on:
+      - server
+
+volumes:
+  data-cloud-db:
+  data-cloud-cache:
+  data-cloud:
+  data-ssl-certs:
+  data-ssl-acme:
+  data-ssl-vhosts:
+  data-ssl-html:
+
+networks:
+  internal:
