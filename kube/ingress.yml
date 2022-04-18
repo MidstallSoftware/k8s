@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: midstall-ingress
+  namespace: midstall
+spec:
+  rules:
+    - host: 'midstall.com'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: midstall-website
+                port:
+                  number: 80
+    - host: 'cloud.midstall.com'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: midstall-nextcloud
+                port:
+                  number: 80
