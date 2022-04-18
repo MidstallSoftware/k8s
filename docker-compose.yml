@@ -2,7 +2,7 @@ version: '3'
 
 services:
   cloud-db:
-    image: 'yobasystems/alpine-mariadb:10.4.13'
+    image: 'yobasystems/alpine-mariadb'
     container_name: midstall-cloud-db
     restart: on-failure
     command: --default-authentication-plugin=mysql_native_password
