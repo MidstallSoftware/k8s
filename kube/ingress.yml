@@ -4,6 +4,7 @@ metadata:
   name: midstall-ingress
   namespace: midstall
 spec:
+  ingressClassName: nginx
   rules:
     - host: 'midstall.com'
       http:
