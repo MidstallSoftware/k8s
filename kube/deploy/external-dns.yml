@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: midstall
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+        - name: external-dns
+          image: k8s.gcr.io/external-dns/external-dns:v0.7.6
+          args:
+            - --source=service
+            - --domain-filter=midstall.com
+            - --provider=cloudflare
+            - --cloudflare-proxied
+          envFrom:
+            - secretRef:
+                name: midstall-external-dns-secret
