@@ -4,3 +4,6 @@
 [submodule "packages/nextcloud"]
 	path = packages/nextcloud
 	url = https://github.com/MidstallSoftware/nextcloud
+[submodule "packages/mail"]
+	path = packages/mail
+	url = https://github.com/MidstallSoftware/mail-suite

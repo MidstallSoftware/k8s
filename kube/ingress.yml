@@ -5,6 +5,10 @@ metadata:
   namespace: midstall
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - mail.midstall.com
+      secretName: tls-mail.midstall.com
   rules:
     - host: 'midstall.com'
       http:
@@ -24,5 +28,15 @@ spec:
             backend:
               service:
                 name: midstall-nextcloud
+                port:
+                  number: 80
+    - host: 'mail.midstall.com'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: midstall-mail
                 port:
                   number: 80

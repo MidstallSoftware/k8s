@@ -17,4 +17,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - name: Apply to Cluster
         run: |
-          kubectl apply -f ./kube/namespace.yml,./kube/ingress.yml
+          kubectl apply $(find kube -name '*.yml' -type f -not -path '*/dev/*.yml' | awk '{ print " -f " $1 }')

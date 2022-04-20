@@ -6,6 +6,7 @@ load('ext://secret', 'secret_yaml_generic')
 k8s_yaml('./kube/namespace.yml')
 k8s_yaml('./kube/ingress.yml')
 
+include('./packages/mail/Tiltfile')
 include('./packages/nextcloud/Tiltfile')
 include('./packages/website/Tiltfile')
 
@@ -16,7 +17,8 @@ k8s_yaml(configmap_from_dict('midstall-nextcloud-mariadb-config', namespace='mid
 
 k8s_yaml(configmap_from_dict('midstall-nextcloud-config', namespace='midstall', inputs = {
   'MYSQL_HOST': '127.0.0.1',
-  'REDIS_HOST': '127.0.0.1'
+  'REDIS_HOST': '127.0.0.1',
+  'NEXTCLOUD_TRUSTED_DOMAINS': 'cloud.midstall.com'
 }))
 
 k8s_yaml(secret_yaml_generic('midstall-nextcloud-mariadb-secret', namespace='midstall', from_env_file='./config/cloud.env'))
