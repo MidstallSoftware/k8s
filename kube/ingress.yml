@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: midstall-ingress
   namespace: midstall
+  attributes:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   ingressClassName: nginx
   tls:
