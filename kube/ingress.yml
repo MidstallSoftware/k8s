@@ -36,6 +36,13 @@ spec:
       http:
         paths:
           - pathType: Prefix
+            path: /admin
+            backend:
+              service:
+                name: midstall-mail
+                port:
+                  number: 7071
+          - pathType: Prefix
             path: /
             backend:
               service:
