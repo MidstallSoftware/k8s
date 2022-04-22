@@ -48,4 +48,4 @@ spec:
               service:
                 name: midstall-mail
                 port:
-                  number: 80
+                  number: 8080
