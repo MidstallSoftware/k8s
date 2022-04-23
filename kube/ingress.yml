@@ -32,13 +32,3 @@ spec:
                 name: midstall-nextcloud
                 port:
                   number: 80
-    - host: 'mail.midstall.com'
-      http:
-        paths:
-          - pathType: Prefix
-            path: /admin
-            backend:
-              service:
-                name: midstall-mail
-                port:
-                  number: 80

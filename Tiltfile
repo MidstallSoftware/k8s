@@ -1,4 +1,5 @@
 allow_k8s_contexts(k8s_context())
+secret_settings(True)
 
 load('ext://configmap', 'configmap_from_dict')
 load('ext://secret', 'secret_yaml_generic')
@@ -21,8 +22,5 @@ k8s_yaml(secret_yaml_generic('midstall-nextcloud-mariadb-secret', namespace='mid
 k8s_yaml(secret_yaml_generic('midstall-nextcloud-redis-secret', namespace='midstall', from_env_file='./config/cloud.env'))
 k8s_yaml(secret_yaml_generic('midstall-nextcloud-secret', namespace='midstall', from_env_file='./config/cloud.env'))
 
-k8s_yaml(secret_yaml_generic('midstall-mail-secret', namespace='midstall', from_env_file='./config/mail.env'))
-
-include('./packages/mail/Tiltfile')
 include('./packages/nextcloud/Tiltfile')
 include('./packages/website/Tiltfile')
