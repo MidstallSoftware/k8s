@@ -9,8 +9,8 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - mail.midstall.com
-      secretName: tls-mail.midstall.com
+        - ldap.midstall.com
+      secretName: tls-ldap.midstall.com
   rules:
     - host: 'midstall.com'
       http:
@@ -30,5 +30,15 @@ spec:
             backend:
               service:
                 name: midstall-nextcloud
+                port:
+                  number: 80
+    - host: 'ldap.midstall.com'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: midstall-ldap-manager
                 port:
                   number: 80
