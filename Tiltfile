@@ -9,7 +9,9 @@ k8s_yaml('./kube/ingress.yml')
 
 k8s_yaml(secret_yaml_generic('midstall-nextcloud-secret', namespace='midstall', from_env_file='./config/cloud.env'))
 k8s_yaml(secret_yaml_generic('midstall-ldap-secret', namespace='midstall', from_env_file='./config/ldap.env'))
+k8s_yaml(secret_yaml_generic('midstall-mail-secret', namespace='midstall', from_env_file='./config/mail.env'))
 
 include('./packages/ldap/Tiltfile')
+include('./packages/mail/Tiltfile')
 include('./packages/nextcloud/Tiltfile')
 include('./packages/website/Tiltfile')
