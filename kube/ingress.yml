@@ -7,10 +7,6 @@ metadata:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - ldap.midstall.com
-      secretName: tls-ldap.midstall.com
   rules:
     - host: 'midstall.com'
       http:
@@ -20,25 +16,5 @@ spec:
             backend:
               service:
                 name: midstall-website
-                port:
-                  number: 80
-    - host: 'cloud.midstall.com'
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: midstall-nextcloud
-                port:
-                  number: 80
-    - host: 'ldap.midstall.com'
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: midstall-ldap-manager
                 port:
                   number: 80
