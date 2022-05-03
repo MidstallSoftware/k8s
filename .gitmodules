@@ -1,12 +1,3 @@
 [submodule "packages/website"]
 	path = packages/website
 	url = https://github.com/MidstallSoftware/website
-[submodule "packages/nextcloud"]
-	path = packages/nextcloud
-	url = https://github.com/MidstallSoftware/nextcloud
-[submodule "packages/ldap"]
-	path = packages/ldap
-	url = https://github.com/MidstallSoftware/ldap-server
-[submodule "packages/mail"]
-	path = packages/mail
-	url = https://github.com/MidstallSoftware/mail-server
