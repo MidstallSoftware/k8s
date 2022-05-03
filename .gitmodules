@@ -1,3 +1,6 @@
 [submodule "packages/website"]
 	path = packages/website
 	url = https://github.com/MidstallSoftware/website
+[submodule "packages/vista"]
+	path = packages/vista
+	url = https://github.com/MidstallSoftware/vista

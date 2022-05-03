@@ -6,4 +6,5 @@ load('ext://secret', 'secret_yaml_generic')
 k8s_yaml('./kube/namespace.yml')
 k8s_yaml('./kube/ingress.yml')
 
+include('./packages/vista/Tiltfile')
 include('./packages/website/Tiltfile')
