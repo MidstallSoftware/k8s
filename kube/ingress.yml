@@ -19,13 +19,3 @@ spec:
                 name: midstall-website
                 port:
                   number: 80
-    - host: 'vista.midstall.com'
-      http:
-        paths:
-          - pathType: Prefix
-            path: /
-            backend:
-              service:
-                name: midstall-vista
-                port:
-                  number: 80
