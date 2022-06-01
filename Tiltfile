@@ -4,6 +4,3 @@ load('ext://configmap', 'configmap_from_dict')
 load('ext://secret', 'secret_yaml_generic')
 
 k8s_yaml('./kube/namespace.yml')
-k8s_yaml('./kube/ingress.yml')
-
-include('./packages/website/Tiltfile')
